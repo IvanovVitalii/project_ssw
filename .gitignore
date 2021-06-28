@@ -1,0 +1,6 @@
+/venv
+/project_ssw/htmlcov/
+.idea
+.coverage
+__pycache__
+db.sqlite3
