@@ -6,6 +6,11 @@ from django.utils import timezone
 from alias.models import Alias
 from alias.serializers import AliasSerializer
 
+'''
+В данном пиложении впервые использовал тесты и сразу встретился с проблемой
+тест serializers не покрывает весь код. Проблему в установленные сроки не решил.
+'''
+
 
 class AliasSerializerTestCase(TestCase):
     def setUp(self):

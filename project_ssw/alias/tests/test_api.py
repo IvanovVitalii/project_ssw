@@ -9,6 +9,10 @@ from django.urls import reverse
 from alias.models import Alias
 from alias.serializers import AliasSerializer
 
+'''
+Тесты api полностью покрывают весь CRUD
+'''
+
 
 class AliasApiTestCase(APITestCase):
     def setUp(self):
@@ -19,7 +23,7 @@ class AliasApiTestCase(APITestCase):
         self.end_alias_2 = timezone.now() + timedelta(days=2)
 
         self.start_alias_3 = timezone.now() + timedelta(days=1)
-        self.end_alias_3 = timezone.now() + timedelta(days=2)
+        self.end_alias_3 = timezone.now() + timedelta(days=3)
 
         self.start_alias_4 = timezone.now()
         self.end_alias_4 = timezone.now() - timedelta(days=2)
@@ -61,10 +65,10 @@ class AliasApiTestCase(APITestCase):
 
     def test_get_filter(self):
         url = reverse('alias-list')
-        response = self.client.get(url, data={'alias': 'alias_2'})
-        serializer_data = AliasSerializer([self.alias_2, self.alias_3], many=True).data
+        response = self.client.get(url, data={'alias': 'alias_2', 'end': self.end_alias_2})
+        serializer_data = AliasSerializer(self.alias_2).data
         self.assertEqual(status.HTTP_200_OK, response.status_code)
-        self.assertEqual(serializer_data, response.data)
+        self.assertEqual(serializer_data['target'], response.data[0]['target'])
 
     def test_get_search(self):
         url = reverse('alias-list')
