@@ -15,7 +15,7 @@ pip install -r requirements.txt
 ```bash
 cd project_ssw
 ```
-- Create Миграция
+- Create migration
 ```bash
 python manager.py makemigrations
 ```
