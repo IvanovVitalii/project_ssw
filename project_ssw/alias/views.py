@@ -10,7 +10,7 @@ class AliasViewSet(ModelViewSet):
     queryset = Alias.objects.all()
     serializer_class = AliasSerializer
 
-    # Подключаем filter, search и ordering
+    # Connecting filter, search and ordering
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filter_fields = ['alias', 'target', 'start', 'end']
     search_fields = ['alias', 'target', 'start', 'end']

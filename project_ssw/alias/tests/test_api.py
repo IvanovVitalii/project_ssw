@@ -9,13 +9,11 @@ from django.urls import reverse
 from alias.models import Alias
 from alias.serializers import AliasSerializer
 
-'''
-Тесты api полностью покрывают весь CRUD
-'''
-
 
 class AliasApiTestCase(APITestCase):
+    """Api tests completely cover the whole CRUD"""
     def setUp(self):
+        """Create test data"""
         self.start_alias_1 = timezone.now()
         self.end_alias_1 = timezone.now() + timedelta(days=1)
 
@@ -50,6 +48,7 @@ class AliasApiTestCase(APITestCase):
                                             )
 
     def test_get(self):
+        """Test GET request (url - alias-list)"""
         url = reverse('alias-list')
         response = self.client.get(url)
         serializer_data = AliasSerializer([self.alias_1, self.alias_2, self.alias_3, self.alias_4], many=True).data
@@ -57,6 +56,7 @@ class AliasApiTestCase(APITestCase):
         self.assertEqual(serializer_data, response.data)
 
     def test_get_alias(self):
+        """Test GET request (url - alias-detail)"""
         url = reverse('alias-detail', args=(self.alias_1.id,))
         response = self.client.get(url)
         serializer_data = AliasSerializer(self.alias_1).data
@@ -64,6 +64,7 @@ class AliasApiTestCase(APITestCase):
         self.assertEqual(serializer_data, response.data)
 
     def test_get_filter(self):
+        """Test GET request with filtering (url - alias-list)"""
         url = reverse('alias-list')
         response = self.client.get(url, data={'alias': 'alias_2', 'end': self.end_alias_2})
         serializer_data = AliasSerializer(self.alias_2).data
@@ -71,6 +72,7 @@ class AliasApiTestCase(APITestCase):
         self.assertEqual(serializer_data['target'], response.data[0]['target'])
 
     def test_get_search(self):
+        """Test GET request with searching (url - alias-list)"""
         url = reverse('alias-list')
         response = self.client.get(url, data={'search': 'alias_1'})
         serializer_data = AliasSerializer([self.alias_1, self.alias_4], many=True).data
@@ -78,6 +80,7 @@ class AliasApiTestCase(APITestCase):
         self.assertEqual(serializer_data, response.data)
 
     def test_get_ordering(self):
+        """Test GET request with ordering (url - alias-list)"""
         url = reverse('alias-list')
         response = self.client.get(url, data={'ordering': 'alias'})
         serializer_data = AliasSerializer([self.alias_1, self.alias_4, self.alias_2, self.alias_3], many=True).data
@@ -85,6 +88,7 @@ class AliasApiTestCase(APITestCase):
         self.assertEqual(serializer_data, response.data)
 
     def test_post(self):
+        """Test POST request (url - alias-list)"""
         self.assertEqual(4, Alias.objects.all().count())
         url = reverse('alias-list')
         data = {'alias': 'alias_2',
@@ -99,6 +103,7 @@ class AliasApiTestCase(APITestCase):
         self.assertEqual(5, Alias.objects.all().count())
 
     def test_put(self):
+        """Test PUT request (url - alias-detail)"""
         url = reverse('alias-detail', args=(self.alias_1.id,))
         data = {'alias': 'alias_5',
                 'target': self.alias_1.target,
@@ -113,6 +118,7 @@ class AliasApiTestCase(APITestCase):
         self.assertEqual('alias_5', self.alias_1.alias)
 
     def test_del(self):
+        """Test DEL request (url - alias-detail)"""
         self.assertEqual(4, Alias.objects.all().count())
         url = reverse('alias-detail', args=(self.alias_1.id,))
         response = self.client.delete(url)

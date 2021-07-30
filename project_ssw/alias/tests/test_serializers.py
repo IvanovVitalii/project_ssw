@@ -6,14 +6,11 @@ from django.utils import timezone
 from alias.models import Alias
 from alias.serializers import AliasSerializer
 
-'''
-В данном пиложении впервые использовал тесты и сразу встретился с проблемой
-тест serializers не покрывает весь код. Проблему в установленные сроки не решил.
-'''
-
 
 class AliasSerializerTestCase(TestCase):
+    """Serializer tests"""
     def setUp(self):
+        """Create test data"""
         self.start_alias_1 = timezone.now().replace(tzinfo=None).isoformat()
         self.end_alias_1 = (timezone.now() + timedelta(days=1)).replace(tzinfo=None).isoformat()
 
@@ -47,8 +44,8 @@ class AliasSerializerTestCase(TestCase):
                                             )
 
     def test_serializer(self):
+        """Serializer test"""
         data = AliasSerializer([self.alias_1, self.alias_2, self.alias_3, self.alias_4], many=True).data
-        print(data[-1])
         expected_data = [
             {
                 'id': self.alias_1.id,
@@ -79,5 +76,4 @@ class AliasSerializerTestCase(TestCase):
                 'end': None
             },
         ]
-        print(expected_data[-1])
         self.assertEqual(expected_data, data)
